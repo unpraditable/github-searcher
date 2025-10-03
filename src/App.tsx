@@ -79,48 +79,65 @@ export default function App() {
   };
 
   return (
-    <div style={{ fontFamily: 'sans-serif', padding: 20 }}>
-      <h1>GitHub Repositories Explorer</h1>
+    <div className="max-w-2xl mx-auto p-6">
+      <h1 className="text-2xl font-bold mb-4">GitHub Repositories Explorer</h1>
+
       <input
         value={query}
         onChange={e => setQuery(e.target.value)}
         onKeyDown={handleKeyDown}
         placeholder="Search username..."
-        style={{ padding: '8px 12px', fontSize: 16 }}
+        className="w-full p-2 border rounded mb-2"
       />
-      {loading && <div>Loading users...</div>}
-      {error && <div style={{ color: 'red' }}>{error}</div>}
-      <ul>
+
+      {loading && <div className="text-gray-500">Loading users...</div>}
+      {error && <div className="text-red-500">{error}</div>}
+
+      <ul className="border rounded divide-y mb-4">
         {users.map((user, i) => (
           <li
             key={user.id}
             onClick={() => handleSelectUser(user)}
-            style={{
-              cursor: 'pointer',
-              background: activeIndex === i ? '#e6f0ff' : 'transparent',
-              padding: '4px 8px',
-            }}
+            className={`flex items-center gap-2 p-2 cursor-pointer hover:bg-gray-100 ${
+              activeIndex === i ? 'bg-blue-100' : ''
+            }`}
           >
-            <img src={user.avatar_url} alt={user.login} width={30} />
-            {user.login}
+            <img src={user.avatar_url} alt={user.login} className="w-8 h-8 rounded-full" />
+            <span>{user.login}</span>
           </li>
         ))}
       </ul>
 
       {selectedUser && (
-        <div style={{ marginTop: 20 }}>
-          <h2>
-            Repositories of <a href={selectedUser.html_url} target="_blank" rel="noreferrer">{selectedUser.login}</a>
+        <div>
+          <h2 className="text-xl font-semibold mb-2">
+            Repositories of{' '}
+            <a
+              href={selectedUser.html_url}
+              target="_blank"
+              rel="noreferrer"
+              className="text-blue-600"
+            >
+              {selectedUser.login}
+            </a>
           </h2>
           {loadingRepos && <div>Loading repositories...</div>}
-          <ul>
+          <ul className="space-y-2">
             {repos.map(r => (
-              <li key={r.id}>
-                <a href={r.html_url} target="_blank" rel="noreferrer">
+              <li
+                key={r.id}
+                className="border rounded p-2 hover:shadow-sm bg-white"
+              >
+                <a
+                  href={r.html_url}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="font-medium text-blue-600"
+                >
                   {r.name}
                 </a>{' '}
-                ⭐{r.stargazers_count}
-                {r.description && <p>{r.description}</p>}
+                <span className="text-sm text-gray-500">⭐ {r.stargazers_count}</span>
+                {r.description && <p className="text-sm text-gray-700">{r.description}</p>}
               </li>
             ))}
           </ul>
